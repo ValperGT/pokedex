@@ -5,18 +5,23 @@ const $pokemonInput = document.querySelector(".pokemon-input");
 const $pokemonButton = document.querySelector(".pokemon-button");
 
 $pokemonButton.addEventListener("click", () => {
-    $pokemonContainer.classList.add("show");
-    $pokemonContainer2.classList.add("show");
-    fetch(`${POKEMON_URL}${$pokemonInput.value}`)
+    let pokemonExist;
+    fetch(`${POKEMON_URL}${$pokemonInput.value.toLowerCase()}`)
         .then(response => {
             if(response.ok){
+                pokemonExist = true;
                 return response.json();
             }else{
+                pokemonExist = false;
                 alert("No such pokemon found");
             }
         })
         .then(pokemon => {
-            const pokemonTypes = []
+            if(pokemonExist){
+                $pokemonContainer.classList.add("show");
+                $pokemonContainer2.classList.add("show");
+            }
+            const pokemonTypes = [];
             pokemon.types.forEach(element =>{
                 pokemonTypes.push(element.type.name);
             })
